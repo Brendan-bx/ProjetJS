@@ -12,6 +12,8 @@ resetPanier.addEventListener('click', () => {
         panier.removeChild(panier.firstChild);
     }
 });
+// On récupère la barre de recherche
+const SearchInput = document.querySelector('.search-form input')
 
 // On ajoute un évênement d'écoute sur tous les boutons "Ajouter au panier"
 for (let i = 0; i < allAddPanier.length; i++) {
@@ -50,4 +52,35 @@ function deleteItem(e) {
     if (e.target.classList.contains('supprimer-item')) {
         e.target.parentElement.parentElement.remove();
     }
+}
+
+SearchInput.addEventListener('keyup', recherche);
+
+
+function recherche() {
+    let filter, allTitles, titleValue, rien;
+    filter = SearchInput.value.toUpperCase();
+    allTitles = document.querySelectorAll('h4');
+    rien = document.querySelector('.hidden');
+    result = 0
+
+
+    for (i = 0; i < allItems.length; i++) {
+
+        titleValue = allTitles[i].innerText;
+
+        if (titleValue.toUpperCase().indexOf(filter) > -1) {
+            allItems[i].style.display = "flex";
+            result++
+            rien.style.display = "none"
+        } else {
+            allItems[i].style.display = "none";
+        }
+        if (result === 0) {
+            rien.style.display = "flex"
+        }
+
+
+    }
+
 }
