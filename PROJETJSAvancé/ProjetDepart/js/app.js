@@ -4,6 +4,14 @@ const allAddPanier = document.querySelectorAll('.add-to-cart');
 const panier = document.querySelector('#cart-table > tbody');
 // On récupère tous nos items
 const allItems = document.querySelectorAll('.course__item');
+// On récupère le bouton "vider le panier"
+const resetPanier = document.getElementById('empty-cart');
+// On vide le panier si le bouton est cliqué
+resetPanier.addEventListener('click', () => {
+    while (panier.firstChild) {
+        panier.removeChild(panier.firstChild);
+    }
+});
 
 // On ajoute un évênement d'écoute sur tous les boutons "Ajouter au panier"
 for (let i = 0; i < allAddPanier.length; i++) {
@@ -39,7 +47,6 @@ for (let i = 0; i < allAddPanier.length; i++) {
 }
 
 function deleteItem(e) {
-    console.log(e.target);
     if (e.target.classList.contains('supprimer-item')) {
         e.target.parentElement.parentElement.remove();
     }
