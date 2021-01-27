@@ -31,8 +31,16 @@ for (let i = 0; i < allAddPanier.length; i++) {
 
         const supprimer = document.createElement('td');
         supprimer.innerHTML = `<a href="#" class="supprimer-item">X</a>`;
+        supprimer.addEventListener('click', deleteItem);
         carte.appendChild(supprimer);
 
         panier.appendChild(carte);
     });
+}
+
+function deleteItem(e) {
+    console.log(e.target);
+    if (e.target.classList.contains('supprimer-item')) {
+        e.target.parentElement.parentElement.remove();
+    }
 }
