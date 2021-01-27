@@ -1,19 +1,17 @@
- /* // On récupère tous nos boutons "Ajouter au panier"
+// On récupère tous nos boutons "Ajouter au panier"
 const allAddPanier = document.querySelectorAll('.add-to-cart');
 // On récupère notre panier
 const panier = document.querySelector('#cart-table > tbody');
 // On récupère tous nos items
 const allItems = document.querySelectorAll('.course__item');
-// On récupère le bouton "vider le panier"
-const resetPanier = document.getElementById('empty-cart');
-// On vide le panier si le bouton est cliqué
-resetPanier.addEventListener('click', () => {
-    while (panier.firstChild) {
-        panier.removeChild(panier.firstChild);
-    }
-});
-// On récupère la barre de recherche
-const SearchInput = document.querySelector('.search-form input')
+
+console.log(localStorage)
+//localStorage.clear();
+
+let recupStringPanierStorage2 = localStorage.getItem('panierStorage');
+let recupPanierStorage2 = JSON.parse(recupStringPanierStorage2)   
+let panierStorage = recupPanierStorage2;
+
 
 // On ajoute un évênement d'écoute sur tous les boutons "Ajouter au panier"
 for (let i = 0; i < allAddPanier.length; i++) {
@@ -45,43 +43,33 @@ for (let i = 0; i < allAddPanier.length; i++) {
         carte.appendChild(supprimer);
 
         panier.appendChild(carte);
+
+        let carteStorage = {}
+        carteStorage.img = allItems[i].querySelector('.course_img > img').src;
+        carteStorage.nom = allItems[i].querySelector('.info__card > h4').textContent;
+        carteStorage.prix = allItems[i].querySelector('.info__card > p > .discount').textContent;
+        carteStorage.quantite = '1';
+        carteStorage.supprimer = `<a href="#" class="supprimer-item">X</a>`;
+
+        console.log(carteStorage)
+
+        
+        panierStorage.push(carteStorage)
+        let stringPanierStorage = JSON.stringify(panierStorage)
+        console.log(stringPanierStorage)
+      
+        localStorage.setItem('panierStorage', stringPanierStorage);
+      
+        let recupStringPanierStorage = localStorage.getItem('panierStorage');
+        let recupPanierStorage = JSON.parse(recupStringPanierStorage)   
+        console.log(recupPanierStorage)
+
     });
 }
 
 function deleteItem(e) {
+    console.log(e.target);
     if (e.target.classList.contains('supprimer-item')) {
         e.target.parentElement.parentElement.remove();
     }
 }
-
-SearchInput.addEventListener('keyup', recherche);
-
-
-function recherche() {
-    let filter, allTitles, titleValue, rien;
-    filter = SearchInput.value.toUpperCase();
-    allTitles = document.querySelectorAll('h4');
-    rien = document.querySelector('.hidden');
-    result = 0
-
-
-    for (i = 0; i < allItems.length; i++) {
-
-        titleValue = allTitles[i].innerText;
-
-        if (titleValue.toUpperCase().indexOf(filter) > -1) {
-            allItems[i].style.display = "flex";
-            result++
-            rien.style.display = "none"
-        } else {
-            allItems[i].style.display = "none";
-        }
-        if (result === 0) {
-            rien.style.display = "flex"
-        }
-
-
-    }
-
-}
-*/
