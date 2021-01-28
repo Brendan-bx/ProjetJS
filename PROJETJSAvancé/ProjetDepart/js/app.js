@@ -94,6 +94,41 @@ function createObjetJson(id) {
     localStorage.setItem('panierStorage', JSON.stringify(panierStorage));
 }
 
+//fonction de compte à rebours
+function t() {
+    var compteur = document.getElementById('compteur');
+    s = duree;
+    m = 0; h = 0;
+    const prix = document.querySelector('.course__item .discount')
+    prix.textContent = "Gratuit"
+    if (s < 0) {
+        compteur.innerHTML = "La réduction n'est plus disponible"
+        prix.textContent = "9.99 €"
+    }
+    else {
+        if (s > 59) {
+            m = Math.floor(s / 60);
+            s = s - m * 60
+        }
+        if (m > 59) {
+            h = Math.floor(m / 60);
+            m = m - h * 60
+        }
+        if (s < 10) {
+            s = "0" + s
+        }
+        if (m < 10) {
+            m = "0" + m
+        }
+        compteur.innerHTML = h + ":" + m + ":" + s;
+    }
+    duree = duree - 1;
+    window.setTimeout("t();", 999);
+}
+duree = "20"
+t();
+
+
 function updatePanier() {
     for (let i = 0; i < panierStorage.length; i++) {
 
@@ -123,18 +158,20 @@ function updatePanier() {
         carte.appendChild(supprimer);
 
         panier.appendChild(carte);
+
     }
+
 }
 
 function deleteItem(e) {
     if (e.target.classList.contains('supprimer-item')) {
         const name = e.target.parentElement.parentElement.querySelectorAll('td')[1].textContent;
-        
+
         // On supprime l'élément du localStorage et du panier
         notif(name, "supprimé du");
         deleteItemStorage(e.target);
         e.target.parentElement.parentElement.remove();
-        
+
         // On vérifie quel cours correspond à l'élément supprimé
         verifCourseToRemove(name);
     }
@@ -146,6 +183,9 @@ function deleteItemStorage(target) {
     localStorage.setItem('panierStorage', JSON.stringify(panierStorage));
 }
 
+
+
+//fonction de notifications
 function notif(nom, action) {
 
     const notifContent = document.createElement('li');
@@ -191,14 +231,14 @@ function addStock(id, stock) {
     // On ajoute un element dans le HTML
     stock.textContent = parseInt(stock.textContent) + 1;
     // On ajoute un element dans le stock du json
-    Object.values(COURSES)[id].stock ++;
+    Object.values(COURSES)[id].stock++;
 }
 
 function removeStock(id, stock) {
     // On ajoute un element dans le HTML
     stock.textContent = parseInt(stock.textContent) - 1;
     // On ajoute un element dans le stock du json
-    Object.values(COURSES)[id].stock --;
+    Object.values(COURSES)[id].stock--;
 }
 
 function verifCourseToRemove(nameTarget) {
@@ -211,3 +251,4 @@ function verifCourseToRemove(nameTarget) {
         }
     }
 }
+
