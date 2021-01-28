@@ -11,7 +11,6 @@ createContainerItem();
 function createContainerItem() {
   const container = document.querySelectorAll('.courses__container')[1];
   const courses = Object.values(COURSES);
-  console.log(courses);
 
   courses.forEach(course => {
     let divItem = document.createElement('div');

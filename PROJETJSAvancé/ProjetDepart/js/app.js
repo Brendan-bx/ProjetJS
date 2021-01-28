@@ -37,6 +37,7 @@ if (localStorage.getItem('panierStorage')) {
 function updateItemsPanier() {
     panierStorage = JSON.parse(localStorage.getItem('panierStorage'));
     updatePanier();
+    updateStock();
 }
 
 // On ajoute un évênement d'écoute sur tous les boutons "Ajouter au panier"
@@ -285,14 +286,26 @@ function removeStock(id, stock) {
  * Controle sur quel cours il faut rajouter du stock après avoir supprimer le cours du panier
  * @param {string} nameTarget nom du cours sur lequel on clique
  */
-function verifCourseToRemove(nameTarget) {
+function verifCourseToRemove(nameTarget, update = false) {
     for (let i = 0; i < allItems.length; i++) {
         const nomCourse = allItems[i].querySelector('.info__card > h4').textContent;
         // incrémente la quantité disponible
-        if (nameTarget === nomCourse) {
+        if (nameTarget === nomCourse && !update) {
             updateCoursesHtml(i, "add");
+            break;
+        }
+        if (nameTarget === nomCourse && update) {
+            updateCoursesHtml(i, "remove");
             break;
         }
     }
 }
 
+/**
+ * Met à jour les stock des cours si le client a des cours dans son panier
+ */
+function updateStock() {
+    panierStorage.forEach( element => {
+        verifCourseToRemove(element.nom, true);
+    });
+}
