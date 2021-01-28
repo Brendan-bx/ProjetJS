@@ -14,46 +14,47 @@
         <h2>Veuillez indiquer vos informations pour valider votre commande</h2>
         <form>
             <div class="form-groupe">
-                <label for="nom">Votre nom</label>
-                <input type="text" placeholder="Nom">
+                <label for="nom" >Votre nom</label>
+                <input type="text" placeholder="Nom" required>
                 <img src="ressources/check.svg" alt="icone de validation" class="icone-verif">
                 <span class="message-alerte">Rentrez un nom valide</span>
             </div>
 
             <div class="form-groupe">
                 <label for="prenom">Votre prénom</label>
-                <input type="text" placeholder="Prénom">
+                <input type="text" placeholder="Prénom" required>
                 <img src="ressources/check.svg" alt="icone de validation" class="icone-verif">
-                <span class="message-alerte">Rentrez un prénom valide</span>
             </div>
 
             <div class="form-groupe">
                 <label for="adresse">Votre adresse</label>
-                <input type="text" placeholder="Adresse">
+                <input type="text" placeholder="Adresse" required>
                 <img src="ressources/check.svg" alt="icone de validation" class="icone-verif">
             </div>
 
             <div class="form-groupe">
                 <label for="email">Votre Email</label>
-                <input type="text" placeholder="Adresse Mail">
+                <input type="text" placeholder="Adresse Mail" id="mail" required>
                 <img src="ressources/check.svg" alt="icone de validation" class="icone-verif">
                 <span class="message-alerte">Rentrez une adresse mail valide</span>
             </div>
 
             <div class="form-groupe">
                 <label for="telephone">Votre numéro de téléphone</label>
-                <input type="text" placeholder="Numéro de téléphone">
+                <input type="tel" placeholder="Numéro de téléphone" required>
                 <img src="ressources/check.svg" alt="icone de validation" class="icone-verif">
                 <span class="message-alerte">Rentrez un numéro de téléphone valide</span>
             </div>
 
             <div class="form-groupe">
                 <label for="nom">Votre numéro de carte bancaire</label>
-                <input type="text" placeholder="Carte bancaire">
+                <input type="text" placeholder="Carte bancaire" required>
                 <img src="ressources/check.svg" alt="icone de validation" class="icone-verif">
                 <span class="message-alerte">Rentrez un numéro de carte bancaire valide</span>
             </div>
             <button type="submit">Valider</button>
         </form>
     </div>
+    <script src="js/commande.js"></script>
 </body>
+</html>
