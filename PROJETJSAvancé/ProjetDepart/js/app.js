@@ -10,6 +10,8 @@ const resetPanier = document.getElementById('empty-cart');
 // On vide le panier si le bouton est cliqué
 resetPanier.addEventListener('click', () => {
     while (panier.firstChild) {
+        const nameChild = panier.firstChild.querySelectorAll('td')[1].textContent;
+        verifCourseToRemove(nameChild);
         panier.removeChild(panier.firstChild);
     }
     panierStorage = [];
@@ -28,10 +30,10 @@ body.appendChild(notification);
 let panierStorage = [];
 
 if (localStorage.getItem('panierStorage')) {
-    updateItems();
+    updateItemsPanier();
 }
 
-function updateItems() {
+function updateItemsPanier() {
     panierStorage = JSON.parse(localStorage.getItem('panierStorage'));
     updatePanier();
 }
@@ -46,6 +48,8 @@ for (let i = 0; i < allAddPanier.length; i++) {
         createCarte(i);
         // On créé nos cartes en JSON pour les stocker dans le localStorage
         createObjetJson(i);
+        // On met à jour le contenu html
+        updateCoursesHtml(i, "remove");
     });
 }
 
@@ -125,9 +129,14 @@ function updatePanier() {
 function deleteItem(e) {
     if (e.target.classList.contains('supprimer-item')) {
         const name = e.target.parentElement.parentElement.querySelectorAll('td')[1].textContent;
+        
+        // On supprime l'élément du localStorage et du panier
         notif(name, "supprimé du");
         deleteItemStorage(e.target);
         e.target.parentElement.parentElement.remove();
+        
+        // On vérifie quel cours correspond à l'élément supprimé
+        verifCourseToRemove(name);
     }
 }
 
@@ -183,4 +192,50 @@ function notif(nom, action) {
     setTimeout(() => {
         notification.removeChild(notification.firstChild);
     }, 3000);
+}
+
+function updateCoursesHtml(id, action) {
+    const coursesContainer = document.querySelectorAll('.courses__container');
+    const courseItem = coursesContainer[1].children;
+    const stock = courseItem[id].querySelector('.stock');
+
+    // On verifie si c'est une incrémentation ou une décrémentation du stock
+    if (action === "add") {
+        addStock(id, stock);
+    }
+    if (action === "remove") {
+        removeStock(id, stock);
+    }
+
+    // Si le stock arrive à 0, retire le cours en question
+    if (parseInt(stock.textContent) <= 0) {
+        courseItem[id].style.display = "none";
+    } else {
+        courseItem[id].style.display = "flex";
+    }
+}
+
+function addStock(id, stock) {
+    // On ajoute un element dans le HTML
+    stock.textContent = parseInt(stock.textContent) + 1;
+    // On ajoute un element dans le stock du json
+    Object.values(COURSES)[id].stock ++;
+}
+
+function removeStock(id, stock) {
+    // On ajoute un element dans le HTML
+    stock.textContent = parseInt(stock.textContent) - 1;
+    // On ajoute un element dans le stock du json
+    Object.values(COURSES)[id].stock --;
+}
+
+function verifCourseToRemove(nameTarget) {
+    for (let i = 0; i < allItems.length; i++) {
+        const nomCourse = allItems[i].querySelector('.info__card > h4').textContent;
+        // incrémente la quantité disponible
+        if (nameTarget === nomCourse) {
+            updateCoursesHtml(i, "add");
+            break;
+        }
+    }
 }
