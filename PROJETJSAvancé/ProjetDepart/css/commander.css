@@ -2,7 +2,7 @@ body {
     margin: 0;
     padding: 0;
     background: #3c3c3c;
-    height: 160vh;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -12,6 +12,7 @@ body {
     flex-shrink: 0;
     background: #fff;
     border-radius: 5px;
+    max-width: 500px;
 }
 h2 {
     text-align: center;
@@ -31,7 +32,7 @@ input {
     margin: 10px 20px 20px 20px;
     outline: 0;
     background: rgb(226,226,226);
-    width: 400px;
+    width: 86%;
     border: 0;
     padding: 10px 12px;
     border-radius: 3px;
