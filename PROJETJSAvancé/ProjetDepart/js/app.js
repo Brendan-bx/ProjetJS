@@ -116,8 +116,6 @@ function t() {
     const prix = document.querySelectorAll('.course__item .discount');
     compteur.style.display = "block";
 
-    console.log("TEST");
-
     for(let i = 0; i < allItems.length; i++){
         prix[i].textContent = 'Gratuit';
     }
@@ -154,7 +152,7 @@ function promotion(id) {
     prixPanier += parseFloat(prix);
     
     if (prixPanier >= 50) {
-        duree = "5";
+        duree = "60";
         t();
     }
 }
