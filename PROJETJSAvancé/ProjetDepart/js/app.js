@@ -6,6 +6,7 @@ const panier = document.querySelector('#cart-table > tbody');
 const allItems = document.querySelectorAll('.course__item');
 // On récupère le bouton "vider le panier"
 const resetPanier = document.getElementById('empty-cart');
+
 // On vide le panier si le bouton est cliqué
 resetPanier.addEventListener('click', () => {
     while (panier.firstChild) {
@@ -14,8 +15,10 @@ resetPanier.addEventListener('click', () => {
     panierStorage = [];
     localStorage.setItem('panierStorage', JSON.stringify(panierStorage));
 });
+
 // On récupère la barre de recherche
 const SearchInput = document.querySelector('.search-form input');
+
 // Container notifications
 const body = document.querySelector('body');
 const notification = document.createElement('ul');
@@ -29,7 +32,7 @@ if (localStorage.getItem('panierStorage')) {
 }
 
 function updateItems() {
-    panierStorage = JSON.parse( localStorage.getItem('panierStorage') );
+    panierStorage = JSON.parse(localStorage.getItem('panierStorage'));
     updatePanier();
 }
 
@@ -134,6 +137,8 @@ function deleteItemStorage(target) {
     localStorage.setItem('panierStorage', JSON.stringify(panierStorage));
 }
 
+
+// fonction de recherche
 SearchInput.addEventListener('keyup', recherche);
 
 function recherche() {
