@@ -7,6 +7,8 @@ const allItems = document.querySelectorAll('.course__item');
 // On récupère le bouton "vider le panier"
 const resetPanier = document.getElementById('empty-cart');
 
+let prixPanier = localStorage.getItem('prixPanier') || 0;
+
 // On vide le panier si le bouton est cliqué
 resetPanier.addEventListener('click', () => {
     while (panier.firstChild) {
@@ -135,7 +137,8 @@ function t() {
     duree = duree - 1;
     window.setTimeout("t();", 999);
 }
-duree = "20"
+
+let duree = "20"
 t();
 
 

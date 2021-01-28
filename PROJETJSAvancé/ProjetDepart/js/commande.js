@@ -73,8 +73,9 @@ inpMail.addEventListener('input', function (e) {
 
 // Validation du tel
 inpTel.addEventListener('input', function (e) {
-    let regex = (/^(06|07)[0-9]{8}/gi);
-    if (e.target.value.search(regex) === 0 && e.target.value.length === 10) {
+    let regex = (/^(\+33|0|0033)[1-9][0-9]{8}/gi);
+
+    if (e.target.value.search(regex) === 0 && (e.target.value.length === 10 || e.target.value.length === 13 || e.target.value.length === 12)) {
 
         allImg[4].style.display = "inline";
         allImg[4].src = "ressources/check.svg";
