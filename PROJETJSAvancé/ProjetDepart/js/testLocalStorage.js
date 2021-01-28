@@ -10,7 +10,6 @@ if (recupPanierStorage != null) {
 
                 const carte = document.createElement('tr');
                 let carteStorage = recupPanierStorage[i];
-                // console.log(carteStorage)
 
                 const img = document.createElement('td');
                 const test = carteStorage.img;
