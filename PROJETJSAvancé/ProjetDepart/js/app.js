@@ -116,6 +116,8 @@ function t() {
     const prix = document.querySelectorAll('.course__item .discount');
     compteur.style.display = "block";
 
+    console.log("TEST");
+
     for(let i = 0; i < allItems.length; i++){
         prix[i].textContent = 'Gratuit';
     }
@@ -142,9 +144,9 @@ function t() {
             m = "0" + m;
         }
         compteur.innerHTML = "PROMOTIONS !!! 0" + h + ":" + m + ":" + s;
+        duree = duree - 1;
+        window.setTimeout("t();", 999);
     }
-    duree = duree - 1;
-    window.setTimeout("t();", 999);
 }
 
 function promotion(id) {
