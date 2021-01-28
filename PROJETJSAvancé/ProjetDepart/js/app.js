@@ -54,6 +54,8 @@ for (let i = 0; i < allAddPanier.length; i++) {
         createObjetJson(i);
         // On met à jour le contenu html
         updateCoursesHtml(i, "remove");
+        // On crontrole le total du panier
+        promotion(i);
     });
 }
 
@@ -108,39 +110,52 @@ function createObjetJson(id) {
 
 //fonction de compte à rebours
 function t() {
-    var compteur = document.getElementById('compteur');
+    const compteur = document.getElementById('compteur');
     s = duree;
     m = 0; h = 0;
-    const prix = document.querySelector('.course__item .discount')
-    prix.textContent = "Gratuit"
+    const prix = document.querySelectorAll('.course__item .discount');
+    compteur.style.display = "block";
+
+    for(let i = 0; i < allItems.length; i++){
+        prix[i].textContent = 'Gratuit';
+    }
+
     if (s < 0) {
-        compteur.innerHTML = "La réduction n'est plus disponible"
-        prix.textContent = "9.99 €"
+        compteur.style.display = "none";
+        for(let i = 0; i < allItems.length; i++){
+            prix[i].textContent = '9.99 €';
+        }
     }
     else {
         if (s > 59) {
             m = Math.floor(s / 60);
-            s = s - m * 60
+            s = s - m * 60;
         }
         if (m > 59) {
             h = Math.floor(m / 60);
-            m = m - h * 60
+            m = m - h * 60;
         }
         if (s < 10) {
-            s = "0" + s
+            s = "0" + s;
         }
         if (m < 10) {
-            m = "0" + m
+            m = "0" + m;
         }
-        compteur.innerHTML = h + ":" + m + ":" + s;
+        compteur.innerHTML = "PROMOTIONS !!! 0" + h + ":" + m + ":" + s;
     }
     duree = duree - 1;
     window.setTimeout("t();", 999);
 }
 
-let duree = "20"
-t();
-
+function promotion(id) {
+    const prix = allItems[id].querySelector('.info__card > p > .discount').textContent;
+    prixPanier += parseFloat(prix);
+    
+    if (prixPanier >= 50) {
+        duree = "5";
+        t();
+    }
+}
 
 /**
  * Met à jour la partie HTML du panier si le client a un panier dans son local storage
