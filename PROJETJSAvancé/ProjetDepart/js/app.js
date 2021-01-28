@@ -29,10 +29,11 @@ body.appendChild(notification);
 
 let panierStorage = [];
 
+// Si le client a déjà un panier on le charge via son local Storage
 if (localStorage.getItem('panierStorage')) {
     updateItemsPanier();
 }
-
+// Récupère les éléments du panier stockés dans le local Storage
 function updateItemsPanier() {
     panierStorage = JSON.parse(localStorage.getItem('panierStorage'));
     updatePanier();
@@ -53,6 +54,10 @@ for (let i = 0; i < allAddPanier.length; i++) {
     });
 }
 
+/**
+ * Créer un élément HTML avec toutes les infos du cours qui a été ajouté au panier
+ * @param {number} id représente l'index du cours à ajouter au panier
+ */
 function createCarte(id) {
     // On créé notre carte pour le panier
     const carte = document.createElement('tr');
@@ -82,6 +87,10 @@ function createCarte(id) {
     panier.appendChild(carte);
 }
 
+/**
+ * Créer un objet Json avec toutes les infos du cours qui a été ajouté au panier
+ * @param {number} id représente l'index du cours à ajouter au panier
+ */
 function createObjetJson(id) {
     let carteStorage = {}
     carteStorage.img = allItems[id].querySelector('.course_img > img').src;
@@ -129,6 +138,9 @@ duree = "20"
 t();
 
 
+/**
+ * Met à jour la partie HTML du panier si le client a un panier dans son local storage
+ */
 function updatePanier() {
     for (let i = 0; i < panierStorage.length; i++) {
 
@@ -163,6 +175,10 @@ function updatePanier() {
 
 }
 
+/**
+ * retire le cours du panier si on clique sur le bouton supprimer
+ * @param {any} e evenement
+ */
 function deleteItem(e) {
     if (e.target.classList.contains('supprimer-item')) {
         const name = e.target.parentElement.parentElement.querySelectorAll('td')[1].textContent;
@@ -177,6 +193,10 @@ function deleteItem(e) {
     }
 }
 
+/**
+ * Supprime le cours du local storage
+ * @param {HTML element} target cible cliqué
+ */
 function deleteItemStorage(target) {
     const index = target.parentElement.parentElement.rowIndex - 1;
     panierStorage.splice(index, 1);
@@ -186,6 +206,11 @@ function deleteItemStorage(target) {
 
 
 //fonction de notifications
+/**
+ * Affiche une notification si un cours a été ajouté ou supprimé du panier
+ * @param {string} nom nom du cours cliqué
+ * @param {string} action action réalisé (ajouté ou supprimé)
+ */
 function notif(nom, action) {
 
     const notifContent = document.createElement('li');
@@ -206,6 +231,11 @@ function notif(nom, action) {
     }, 3000);
 }
 
+/**
+ * Met à jours les stock dispo dans l'HTML
+ * @param {number} id représente l'index du cours à mettre à jour
+ * @param {string} action action à réaliser (add / remove)
+ */
 function updateCoursesHtml(id, action) {
     const coursesContainer = document.querySelectorAll('.courses__container');
     const courseItem = coursesContainer[1].children;
@@ -227,6 +257,11 @@ function updateCoursesHtml(id, action) {
     }
 }
 
+/**
+ * Ajoute la quantité au stock du cours retiré du panier
+ * @param {number} id représente l'index du cours à mettre à jour
+ * @param {HTML element} stock span représentant le stock
+ */
 function addStock(id, stock) {
     // On ajoute un element dans le HTML
     stock.textContent = parseInt(stock.textContent) + 1;
@@ -234,6 +269,11 @@ function addStock(id, stock) {
     Object.values(COURSES)[id].stock++;
 }
 
+/**
+ * Retire la quantité au stock du cours retiré du panier
+ * @param {number} id représente l'index du cours à mettre à jour
+ * @param {HTML element} stock span représentant le stock
+ */
 function removeStock(id, stock) {
     // On ajoute un element dans le HTML
     stock.textContent = parseInt(stock.textContent) - 1;
@@ -241,6 +281,10 @@ function removeStock(id, stock) {
     Object.values(COURSES)[id].stock--;
 }
 
+/**
+ * Controle sur quel cours il faut rajouter du stock après avoir supprimer le cours du panier
+ * @param {string} nameTarget nom du cours sur lequel on clique
+ */
 function verifCourseToRemove(nameTarget) {
     for (let i = 0; i < allItems.length; i++) {
         const nomCourse = allItems[i].querySelector('.info__card > h4').textContent;
