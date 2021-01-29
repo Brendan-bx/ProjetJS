@@ -65,7 +65,8 @@ for (let i = 0; i < allAddPanier.length; i++) {
         // On met à jour le contenu html
         updateCoursesHtml(i, "remove");
         // On crontrole le total du panier
-        promotion(i, "add");
+        const prix = allItems[i].querySelector('.info__card > p > .discount').textContent;
+        promotion(prix, "add");
         
     });
 }
@@ -158,8 +159,7 @@ function t() {
  * Active le chrono de la promotion
  * @param {number} id index de la cible
  */
-function promotion(id, action) {
-    const prix = allItems[id].querySelector('.info__card > p > .discount').textContent;
+function promotion(prix, action) {
     
     if (parseFloat(prix) && action === "add") {
         prixPanier = parseFloat(prixPanier) + parseFloat(prix);
@@ -169,18 +169,21 @@ function promotion(id, action) {
         prixPanier = parseFloat(prixPanier) - parseFloat(prix);
         localStorage.setItem('prixPanier', JSON.stringify(prixPanier));
     }
+    const compteur = document.getElementById('compteur');
 
     if (prixPanier >= 50) {
         duree = "60";
         t();
     }
-    else if (prixPanier < 50) {
-        clearTimeout(timer);
-    } 
     else if (prixPanier <= 0) {
         prixPanier = 0;
+        compteur.style.display = "none";
         localStorage.setItem('prixPanier', JSON.stringify(prixPanier));
     }
+    else if (prixPanier < 50) {
+        clearTimeout(timer);
+        compteur.style.display = "none";
+    } 
 }
 
 /**
@@ -238,7 +241,7 @@ function updatePanier() {
 function deleteItem(e) {
     if (e.target.classList.contains('supprimer-item')) {
         const name = e.target.parentElement.parentElement.querySelectorAll('td')[1].textContent;
-
+        const prix = e.target.parentElement.parentElement.querySelectorAll('td')[2].textContent;
         // On supprime l'élément du localStorage et du panier
         notif(name, "supprimé du");
         deleteItemStorage(e.target);
@@ -246,6 +249,8 @@ function deleteItem(e) {
 
         // On vérifie quel cours correspond à l'élément supprimé
         verifCourseToRemove(name);
+
+        promotion(prix, "remove");
     }
 }
 
