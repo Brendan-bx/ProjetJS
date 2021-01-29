@@ -16,7 +16,7 @@ inpNom.addEventListener('input', function (e) {
         allImg[0].src = "ressources/check.svg";
         allSpan[0].style.display = "none";
     }
-    else if (e.target.value.length > 25) {
+    else if (e.target.value.length) {
         allImg[0].style.display = "inline";
         allImg[0].src = "ressources/error.svg";
         allSpan[0].style.display = "inline";
@@ -30,7 +30,7 @@ inpPrenom.addEventListener('input', function (e) {
         allImg[1].src = "ressources/check.svg";
         allSpan[1].style.display = "none";
     }
-    else if (e.target.value.length > 25) {
+    else if (e.target.value.length) {
         allImg[1].style.display = "inline";
         allImg[1].src = "ressources/error.svg";
         allSpan[1].style.display = "inline";
@@ -44,7 +44,7 @@ inpAdresse.addEventListener('input', function (e) {
         allImg[2].src = "ressources/check.svg";
         allSpan[2].style.display = "none";
     }
-    else if (e.target.value.length > 50) {
+    else if (e.target.value.length) {
         allImg[2].style.display = "inline";
         allImg[2].src = "ressources/error.svg";
         allSpan[2].style.display = "inline";
