@@ -8,6 +8,7 @@ const allItems = document.querySelectorAll('.course__item');
 const resetPanier = document.getElementById('empty-cart');
 
 let prixPanier = localStorage.getItem('prixPanier') || 0;
+let timer;
 
 // On vide le panier si le bouton est cliqué
 resetPanier.addEventListener('click', () => {
@@ -18,6 +19,11 @@ resetPanier.addEventListener('click', () => {
     }
     panierStorage = [];
     localStorage.setItem('panierStorage', JSON.stringify(panierStorage));
+    prixPanier = 0;
+    localStorage.setItem('prixPanier', JSON.stringify(prixPanier));
+    clearTimeout(timer);
+    const compteur = document.getElementById('compteur');
+    compteur.style.display = "none";
 });
 
 // On récupère la barre de recherche
@@ -55,7 +61,7 @@ for (let i = 0; i < allAddPanier.length; i++) {
         // On met à jour le contenu html
         updateCoursesHtml(i, "remove");
         // On crontrole le total du panier
-        promotion(i);
+        promotion(i, "add");
     });
 }
 
@@ -115,16 +121,12 @@ function t() {
     m = 0; h = 0;
     const prix = document.querySelectorAll('.course__item .discount');
     compteur.style.display = "block";
-
-    for(let i = 0; i < allItems.length; i++){
-        prix[i].textContent = 'Gratuit';
-    }
+    console.log(duree);
+    updatePromo(prix, "Gratuit");
 
     if (s < 0) {
         compteur.style.display = "none";
-        for(let i = 0; i < allItems.length; i++){
-            prix[i].textContent = '9.99 €';
-        }
+        updatePromo(prix, "9.99 €");
     }
     else {
         if (s > 59) {
@@ -143,17 +145,42 @@ function t() {
         }
         compteur.innerHTML = "PROMOTIONS !!! 0" + h + ":" + m + ":" + s;
         duree = duree - 1;
-        window.setTimeout("t();", 999);
+        timer = window.setTimeout("t();", 999);
     }
 }
 
-function promotion(id) {
+/**
+ * Active le chrono de la promotion
+ * @param {number} id index de la cible
+ */
+function promotion(id, action) {
     const prix = allItems[id].querySelector('.info__card > p > .discount').textContent;
-    prixPanier += parseFloat(prix);
+    
+    if (parseFloat(prix) && action === "add") {
+        console.log(typeof prixPanier);
+        prixPanier = parseFloat(prixPanier) + parseFloat(prix);
+        localStorage.setItem('prixPanier', JSON.stringify(prixPanier));
+    }
+    if (parseFloat(prix) && action === "remove") {
+        console.log(typeof prixPanier);
+        prixPanier = parseFloat(prixPanier) - parseFloat(prix);
+        localStorage.setItem('prixPanier', JSON.stringify(prixPanier));
+    }
     
     if (prixPanier >= 50) {
-        duree = "60";
+        duree = "5";
         t();
+    }
+}
+
+/**
+ * Met à jour le prix des cours lors d'une promotion
+ * @param {HTML element} target balise html de la cible
+ * @param {string} text texte de la cible
+ */
+function updatePromo(target, text) {
+    for(let i = 0; i < allItems.length; i++){
+        target[i].textContent = text;
     }
 }
 
@@ -310,6 +337,7 @@ function verifCourseToRemove(nameTarget, update = false) {
         // incrémente la quantité disponible
         if (nameTarget === nomCourse && !update) {
             updateCoursesHtml(i, "add");
+            promotion(i, "remove");
             break;
         }
         if (nameTarget === nomCourse && update) {
