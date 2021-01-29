@@ -19,9 +19,13 @@ resetPanier.addEventListener('click', () => {
     }
     panierStorage = [];
     localStorage.setItem('panierStorage', JSON.stringify(panierStorage));
+
+    const prix = document.querySelectorAll('.course__item .discount');
     prixPanier = 0;
     localStorage.setItem('prixPanier', JSON.stringify(prixPanier));
+    updatePromo(prix, "9.99 €");
     clearTimeout(timer);
+
     const compteur = document.getElementById('compteur');
     compteur.style.display = "none";
 });
@@ -62,6 +66,7 @@ for (let i = 0; i < allAddPanier.length; i++) {
         updateCoursesHtml(i, "remove");
         // On crontrole le total du panier
         promotion(i, "add");
+        
     });
 }
 
@@ -121,7 +126,7 @@ function t() {
     m = 0; h = 0;
     const prix = document.querySelectorAll('.course__item .discount');
     compteur.style.display = "block";
-    console.log(duree);
+    
     updatePromo(prix, "Gratuit");
 
     if (s < 0) {
@@ -157,19 +162,24 @@ function promotion(id, action) {
     const prix = allItems[id].querySelector('.info__card > p > .discount').textContent;
     
     if (parseFloat(prix) && action === "add") {
-        console.log(typeof prixPanier);
         prixPanier = parseFloat(prixPanier) + parseFloat(prix);
         localStorage.setItem('prixPanier', JSON.stringify(prixPanier));
     }
     if (parseFloat(prix) && action === "remove") {
-        console.log(typeof prixPanier);
         prixPanier = parseFloat(prixPanier) - parseFloat(prix);
         localStorage.setItem('prixPanier', JSON.stringify(prixPanier));
     }
-    
+
     if (prixPanier >= 50) {
-        duree = "5";
+        duree = "60";
         t();
+    }
+    else if (prixPanier < 50) {
+        clearTimeout(timer);
+    } 
+    else if (prixPanier <= 0) {
+        prixPanier = 0;
+        localStorage.setItem('prixPanier', JSON.stringify(prixPanier));
     }
 }
 
@@ -249,8 +259,6 @@ function deleteItemStorage(target) {
     localStorage.setItem('panierStorage', JSON.stringify(panierStorage));
 }
 
-
-
 //fonction de notifications
 /**
  * Affiche une notification si un cours a été ajouté ou supprimé du panier
@@ -321,9 +329,9 @@ function addStock(id, stock) {
  * @param {HTML element} stock span représentant le stock
  */
 function removeStock(id, stock) {
-    // On ajoute un element dans le HTML
+    // On retire un element dans le HTML
     stock.textContent = parseInt(stock.textContent) - 1;
-    // On ajoute un element dans le stock du json
+    // On retire un element dans le stock du json
     Object.values(COURSES)[id].stock--;
 }
 
@@ -337,7 +345,6 @@ function verifCourseToRemove(nameTarget, update = false) {
         // incrémente la quantité disponible
         if (nameTarget === nomCourse && !update) {
             updateCoursesHtml(i, "add");
-            promotion(i, "remove");
             break;
         }
         if (nameTarget === nomCourse && update) {
